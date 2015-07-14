@@ -1,0 +1,21 @@
+<div class="navbar-fixed">
+ <nav>
+    <div class="nav-wrapper">
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <%if current_user%>
+      <li class="waves-effect waves-light">  <%= link_to "Sign Out", signout_path, id: "sign_out" %></li>
+      <% else %>
+          <li class="waves-effect waves-light"><%= link_to "Sign in with Google", "/auth/google_oauth2", id: "sign_in" %></li>
+      <% end %>
+        <li class="waves-effect waves-light"><a href="/">home</a></li>
+        <li class="waves-effect waves-light"><a href="../calendars">calendar</a></li>
+        <li class="waves-effect waves-light"><a href="../maps">map</a></li>
+        <li class="waves-effect waves-light"><a href="../musics">music</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<script>
+  $( document ).ready(Waves.displayEffect());
+</script>

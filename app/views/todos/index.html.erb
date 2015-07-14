@@ -1,0 +1,27 @@
+
+<div class="container">
+
+	<h1>Search Steam Name</h1>
+	<%= form_tag todos_path, :method => 'get' do %>
+	    <%= text_field_tag :response, params[:response] %>
+	    <%= submit_tag "Search", :name => nil%>
+	<% end %>
+
+
+	<%if @response['gamesList']%>
+
+		<%(@response['gamesList']['games']['game']).each do |stuff|%>
+			
+			<%= image_tag (stuff['logo'])%>
+			<%= check_box_tag stuff['appID'] %>
+			<%= label_tag stuff['appID'], 'Play Game'%>
+
+		    <input type="date" class="datepicker">
+		
+		<%end%>
+	<%else%>
+		User Profile is Private or does not exist...
+	<%end%>
+
+</div>
+

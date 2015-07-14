@@ -1,0 +1,252 @@
+<head>
+        <meta name="description" content="HTML5 Audio Spectrum Visualizer">
+        <title>HTML5 Audio API showcase | Audio visualizer</title>
+        <style type="text/css">
+            
+            #visualizer{
+                text-align: center;
+            }
+            audio{
+                margin: 0 auto;
+                display: block;
+            }
+            svg{
+                 margin: 0 auto;
+                display: block;
+            }
+
+        </style>
+    </head>
+    
+    <div class="container">    
+        <audio preload controls src="initiald.mp3" type="audio/mp3" style="width: 800px">
+             Your browser is not compatible with HTML5.
+        </audio>
+        <div id="visualizer" >
+            <canvas id='waveform' width="800px" height="350px"></canvas>
+            <canvas id='bar' width="800px" height="350px"></canvas>
+        </div>
+        <svg id="d3bar" height="350px" width="800px"></svg>
+        <!-- <svg id="d3hex" height="350px" width="800px"></svg> -->
+    </div>
+        
+
+<script>
+
+
+
+
+window.onload = function() {
+    //create a variable to start routing
+    var context;
+    
+    try {
+        // Fix up for prefixing
+        window.AudioContext = window.AudioContext;
+
+        context = new AudioContext();
+    }
+    catch(e) {
+        document.getElementById('visualizer').innerHTML = 'Web Audio API is not supported in this browser.';
+    }
+    //analyze music source and returns data from audio tag
+    var text = "";
+    //get source of audio through tag
+    var myAudio = document.querySelector('audio');
+    var source = context.createMediaElementSource(myAudio);
+    // Bind our analyser to the media element source.
+    var analyser = context.createAnalyser();
+    // Connect the output of the source to the input of the analyser
+    source.connect(analyser);
+    // Connect the output of the analyser to the destination
+    analyser.connect(context.destination);
+
+    
+    if (myAudio.readyState == 0){
+        // text = "No file found.";
+    }
+
+    waveform(analyser);
+    drawSpectrum(analyser,text);
+    d3bar(analyser);
+    // d3hex(analyser);
+};
+
+function d3hex(analyser){
+
+
+};
+
+
+
+
+
+//bars with d3
+function d3bar(analyser){
+//var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+  var frequencyData = new Uint8Array(200);
+
+  var svgHeight = '300';
+  var svgWidth = '1200';
+  var barPadding = '1';
+
+  function createSvg(parent, height, width) {
+    return d3.select(parent).append('svg').attr('height', height).attr('width', width);
+  }
+
+  var svg = createSvg('#d3bar', svgHeight, svgWidth);
+
+  // Create our initial D3 chart.
+  svg.selectAll('rect')
+     .data(frequencyData)
+     .enter()
+     .append('rect')
+     .attr('x', function (d, i) {
+        return i * (svgWidth / frequencyData.length);
+     })
+     .attr('width', svgWidth / frequencyData.length - barPadding);
+
+  // Continuously loop and update chart with frequency data.
+  function renderChart() {
+     requestAnimationFrame(renderChart);
+
+     // Copy frequency data to frequencyData array.
+     analyser.getByteFrequencyData(frequencyData);
+
+     // Update d3 chart with new data.
+     svg.selectAll('rect')
+        .data(frequencyData)
+        .attr('y', function(d) {
+           return svgHeight - d;
+        })
+        .attr('height', function(d) {
+           return d;
+        })
+        .attr('fill', function(d) {
+           return 'rgb(0, 0, ' + d + ')';
+        });
+  }
+
+  // Run the loop
+  renderChart();
+    
+
+};
+
+
+
+//waveform with canvas
+function waveform(analyser){
+    
+    var bufferLength = analyser.frequencyBinCount;
+    var dataArray = new Uint8Array(bufferLength);
+
+    
+    //create waveform from music file
+    var canvas = document.getElementById('waveform');
+    var WIDTH = canvas.width;
+    var HEIGHT= canvas.height - 2;
+    var canvasCtx = canvas.getContext('2d');
+    canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+    function draw() {
+        drawVisual = requestAnimationFrame(draw);
+        analyser.getByteTimeDomainData(dataArray);
+        canvasCtx.fillStyle = 'BLACK';
+        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = 'LIMEGREEN';
+
+        canvasCtx.beginPath();
+        var sliceWidth = WIDTH * 1.0 / bufferLength;
+      var x = 0;
+      for(var i = 0; i < bufferLength; i++) {
+   
+        var v = dataArray[i] / 128.0;
+        var y = v * HEIGHT/2;
+
+        if(i === 0) {
+          canvasCtx.moveTo(x, y);
+        } else {
+          canvasCtx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
+      }
+      canvasCtx.lineTo(canvas.width, canvas.height/2);
+      canvasCtx.stroke();
+    };
+    draw();
+};
+
+
+// bars with canvas
+function drawSpectrum(analyser,text) {
+        var that = this,
+        //target div with canvas id
+            canvas = document.getElementById('bar'),
+            cwidth = canvas.width, //get the height and width from tag
+            cheight = canvas.height - 2,
+            meterWidth = 10, //width of the meters in the spectrum
+            gap = 2, //gap between meters
+            capHeight = 2,
+            capStyle = '#fff',
+            meterNum = Math.round(cwidth / (10 + 2)), //count of the meters
+            capYPositionArray = []; ////store the vertical position of the caps for the preivous frame
+        ctx = canvas.getContext('2d'),
+        gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        //adds gradient for colors on bars
+        // ctx.font = "20pt Calibri,Geneva,Arial";
+        // gradient.addColorStop(1, '#0f0');
+        // gradient.addColorStop(0.5, '#ff0');
+        // gradient.addColorStop(0, '#f00');
+        gradient.addColorStop(1, '#fff8dc');
+        gradient.addColorStop(.65, '#00ffff');
+        gradient.addColorStop(.45, '#caff70');
+        gradient.addColorStop(0, '#ff1493');
+        //drawing the actual meter bar
+        var drawMeter = function() {
+            var array = new Uint8Array(analyser.frequencyBinCount); //array of music data
+            analyser.getByteFrequencyData(array);
+            // console.log(array);
+            if (that.status === 0) {
+                //fix when some sounds end the value still not back to zero
+                for (var i = array.length - 1; i >= 0; i--) {
+                    array[i] = 0;
+                };
+                allCapsReachBottom = true;
+                for (var i = capYPositionArray.length - 1; i >= 0; i--) {
+                    allCapsReachBottom = allCapsReachBottom && (capYPositionArray[i] === 0);
+                };
+                if (allCapsReachBottom) {
+                    cancelAnimationFrame(that.animationId); //since the sound is stopped and animation finished, stop the requestAnimation to prevent potential memory leak,THIS IS VERY IMPORTANT!
+                    return;
+                };
+            };
+            var step = Math.round(array.length / meterNum); //sample limited data from the total array
+            ctx.clearRect(0, 0, cwidth, cheight);
+            for (var i = 0; i < meterNum; i++) {
+                var value = array[i * step];
+                if (capYPositionArray.length < Math.round(meterNum)) {
+                    capYPositionArray.push(value);
+                };
+                ctx.fillStyle = capStyle;
+                //draw the cap, with transition effect
+                if (value < capYPositionArray[i]) {
+                    ctx.fillRect(i * 12, cheight - (--capYPositionArray[i]), meterWidth, capHeight);
+                } else {
+                    ctx.fillRect(i * 12, cheight - value, meterWidth, capHeight);
+                    capYPositionArray[i] = value;
+                };
+                ctx.fillStyle = gradient; //set the fillStyle to gradient for a better look
+                ctx.fillRect(i * 12 /*meterWidth+gap*/ , cheight - value + capHeight, meterWidth, cheight); //the meter
+            }
+            // ctx.fillStyle = "rgb(255,255,255)";
+            // ctx.fillText(text, 10, cheight-30);
+            that.animationId = requestAnimationFrame(drawMeter);//draws meters
+        }
+        this.animationId = requestAnimationFrame(drawMeter);//draws bars
+    };
+
+
+</script>
+    
