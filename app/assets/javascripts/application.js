@@ -16,5 +16,3 @@
 //= require turbolinks
 //= require chroma
 //= require_tree .
-
-

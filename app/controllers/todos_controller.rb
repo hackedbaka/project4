@@ -1,7 +1,10 @@
 class TodosController < ApplicationController
-	
 
 	def index
+
+	end	
+
+	def create
 
 		if :response
   		search=params[:response]
@@ -9,6 +12,13 @@ class TodosController < ApplicationController
   		else
   		@response= "The specified profile could not be found."
   		end
+
+  		
+
+	end
+
+	def show
+
 	end
 
 	

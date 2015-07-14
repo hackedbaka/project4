@@ -18,7 +18,8 @@ body{
 	font-family: 'Press Start 2P', cursive;
         background-image: url('matrix.gif');
 		background-attachment: fixed;
-        /*background-repeat: no-repeat;*/
+        /*background-repeat: no-repeat; *= require fullcalendar_engine/application
+*/
         background-size: 100% 100%;
         color: lime;
 }
@@ -27,4 +28,10 @@ label{
 }
 nav{
 	background-color: black;
+	color: lime;
+}
+
+nav ul li a {
+	
+	color: lime;
 }

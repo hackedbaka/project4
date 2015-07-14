@@ -22,6 +22,7 @@ gem 'momentjs-rails'
 gem 'omniauth-steam'
 gem 'figaro'
 gem 'nifty-generators'
+
 gem 'google-api-client', :require => 'google/api_client'
 gem 'omniauth'
 gem 'omniauth-google-oauth2', :git => 'https://github.com/zquestz/omniauth-google-oauth2.git'

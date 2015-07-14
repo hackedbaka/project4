@@ -1,6 +1,7 @@
 <div class="navbar-fixed">
  <nav>
     <div class="nav-wrapper">
+    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
       <%if current_user%>
       <li class="waves-effect waves-light">  <%= link_to "Sign Out", signout_path, id: "sign_out" %></li>
@@ -9,13 +10,30 @@
       <% end %>
         <li class="waves-effect waves-light"><a href="/">home</a></li>
         <li class="waves-effect waves-light"><a href="../calendars">calendar</a></li>
-        <li class="waves-effect waves-light"><a href="../maps">map</a></li>
+        <li class="waves-effect waves-light"><a href="../todos/create">list</a></li>
         <li class="waves-effect waves-light"><a href="../musics">music</a></li>
+        <li class="waves-effect waves-light"><a href="../maps">map</a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <%if current_user%>
+      <li class="waves-effect waves-light">  <%= link_to "Sign Out", signout_path, id: "sign_out" %></li>
+      <% else %>
+          <li class="waves-effect waves-light"><%= link_to "Sign in with Google", "/auth/google_oauth2", id: "sign_in" %></li>
+      <% end %>
+        <li class="waves-effect waves-light"><a href="/">home</a></li>
+        <li class="waves-effect waves-light"><a href="../calendars">calendar</a></li>
+        <li class="waves-effect waves-light"><a href="../todos/create">list</a></li>
+        <li class="waves-effect waves-light"><a href="../musics">music</a></li>
+        <li class="waves-effect waves-light"><a href="../maps">map</a></li>
+      
       </ul>
     </div>
   </nav>
+
 </div>
+
 
 <script>
   $( document ).ready(Waves.displayEffect());
+  $(".button-collapse").sideNav();
 </script>

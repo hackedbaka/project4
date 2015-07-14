@@ -33,10 +33,6 @@
 
 <script>
 
-
-
-
-window.onload = function() {
     //create a variable to start routing
     var context;
     
@@ -69,15 +65,20 @@ window.onload = function() {
     waveform(analyser);
     drawSpectrum(analyser,text);
     d3bar(analyser);
-    // d3hex(analyser);
-};
-
-function d3hex(analyser){
+    d3hex(analyser);
 
 
-};
-
-
+// function d3hex(analyser){
+//     var frequencyData = new Uint8Array(200);
+    
+        
+//         function repeat(){
+//         analyser.getByteFrequencyData(frequencyData);
+       
+       
+//         };
+//         repeat();
+// };
 
 
 
@@ -123,7 +124,7 @@ function d3bar(analyser){
            return d;
         })
         .attr('fill', function(d) {
-           return 'rgb(0, 0, ' + d + ')';
+           return 'rgb(255, ' + (d) + ' ,240 )';
         });
   }
 

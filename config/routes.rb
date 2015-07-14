@@ -2,10 +2,13 @@ Rails.application.routes.draw do
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+  
 
   # You can have the root of your site routed with "root"
   root 'todos#index'
   get 'todos/' => 'todos#index'
+  get 'todos/create' => 'todos#create'
+  get 'todos/show/:id' => 'todos#show'
 
   get 'auth/:provider/callback', to: 'sessions#create'
   get 'auth/failure', to: redirect('/')
@@ -14,6 +17,7 @@ Rails.application.routes.draw do
   get 'calendars/' => 'calendars#index'
   get 'musics/' => 'musics#index'
   get 'maps/' => 'maps#index'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
