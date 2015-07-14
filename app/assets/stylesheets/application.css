@@ -16,7 +16,7 @@
 
 body{
 	font-family: 'Press Start 2P', cursive;
-        background-image: url('giphy copy.gif');
+        background-image: url('matrix.gif');
 		background-attachment: fixed;
         /*background-repeat: no-repeat;*/
         background-size: 100% 100%;
@@ -24,4 +24,7 @@ body{
 }
 label{
 	color: lime;
+}
+nav{
+	background-color: black;
 }
