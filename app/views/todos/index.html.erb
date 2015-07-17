@@ -1,31 +1,25 @@
+<div class="container">
 
-<div class="parallax-container">
-    <div class="parallax"><%=image_tag src="dance.gif"%></div>
-  </div>
-  <div class="section black">
-    <div class="row container">
-      <h2 class="header">WECOME TO ROBOR</h2>
-      <p>YOUR ORGANIZER FOR PLAYING GAMES</p>
-    </div>
-  </div>
-  <div class="parallax-container">
-    <div class="parallax"><%=image_tag src="dance2.gif"%></div>
-  </div>
-  <div class="section black">
-    <div class="row container">
-      <h2 class="header">CLICK THE TAGS</h2>
-      <p>GET A GAME LIST TO ORGANIZE WHEN YOU WANT TO PLAY YOUR GAMES</p>
-    </div>
-  </div>
-  <div class="parallax-container">
-    <div class="parallax"><%=image_tag src="dance3.gif"%></div>
-  </div>
-  <div class="section black">
-    <div class="row container">
-      <h2 class="header">CREATED BY</h2>
-      <p>JEFFREY WU - CUZ I GOT TOO MANY GAMES ON MY LIST</p>
-    </div>
-  </div>
-  <div class="parallax-container">
-    <div class="parallax"><%=image_tag src="dance4.gif"%></div>
-  </div>
+	<h1>The Game List</h1>
+
+	<%if @lists%> 
+		<ul>
+		    <% @lists.each do |list| %>
+		    
+		    	<li>
+			    	<strong><%= list.name%></strong>
+		        </li>
+		        <li>
+			        <%= image_tag list.logo%>
+			    </li>
+			    <li>
+			        <%= link_to "Game Info Link", list.storelink %>
+			    </li>
+		    <% end %>
+
+		</ul>
+	<%else%>
+		There currently is no list
+	<%end%>
+		<%= link_to "Get Some Games", todos_search_path%>
+</div>

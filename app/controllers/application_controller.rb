@@ -11,8 +11,8 @@ class ApplicationController < ActionController::Base
 
   def authorize
     unless current_user
-        flash["alert-warning"] = "You must be logged in to view that page"
-        redirect_to new_session_path
+        flash["warning"] = "You must be logged in to view that page"
+        redirect_to root_path
     end
   end
 end

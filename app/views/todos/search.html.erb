@@ -1,0 +1,23 @@
+<div class="container">
+	
+	<h1>Search Steam Name Get Games In Your List</h1>
+	
+	<%= form_tag todos_search_path, :method => 'get' do %>
+	    <%= text_field_tag :response, params[:response] %>
+	    <%= submit_tag "Search"%>
+	<% end %>  
+		
+	
+		<%if @response['gamesList']%>
+
+				<%(@response['gamesList']['games']['game']).each do |stuff|%>
+				
+						<%= image_tag (stuff['logo'])%>
+
+				<%end%>
+		<%else%>
+			User Profile is Private or does not exist...
+		<%end%>
+
+</div>
+

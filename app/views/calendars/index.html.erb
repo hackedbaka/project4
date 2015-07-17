@@ -8,12 +8,9 @@ $(document).ready(function() {
 
     $('#calendar').fullCalendar({
         // put your options and callbacks here
-         header: {
-		    left: 'title',
-		    center: 'today prev,next',
-		    right: 'month,basicWeek,basicDay'
-		  }
+         
 
+		  events: '/events.json'
 		 
     });
 
