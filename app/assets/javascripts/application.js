@@ -11,8 +11,10 @@
 // about supported directives.
 //
 //= require jquery
+//= require moment.min
 //= require jquery_ujs
 //= require jquery.turbolinks
 //= require turbolinks
 //= require chroma
 //= require_tree .
+//= require fullcalendar
