@@ -20,6 +20,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    @lists = List.all
   end
 
   # POST /events
